@@ -128,13 +128,13 @@ def split_train_val_test(category='politics', suffix='_fixed'):
         test.to_csv(outdir + '/test.csv')
 
 
+if __name__ == "__main__":
+    merged_path = process_tokenized_text()
 
-merged_path = process_tokenized_text()
+    path = filter_comments_by_category(merged_path, category='sport')
+    filter_by_rank(path, category='sport', suffix='_new')
+    split_train_val_test(category='sport', suffix='_new')
 
-path = filter_comments_by_category(merged_path, category='sport')
-filter_by_rank(path, category='sport', suffix='_new')
-split_train_val_test(category='sport', suffix='_new')
-
-path = filter_comments_by_category(merged_path, category='politics')
-filter_by_rank(path, category='politics', suffix='_new')
-split_train_val_test(category='politics', suffix='_new')
+    path = filter_comments_by_category(merged_path, category='politics')
+    filter_by_rank(path, category='politics', suffix='_new')
+    split_train_val_test(category='politics', suffix='_new')
