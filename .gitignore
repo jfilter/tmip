@@ -1,5 +1,6 @@
 # Manually added entries
 data/
+plots/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

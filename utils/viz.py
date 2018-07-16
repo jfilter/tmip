@@ -11,9 +11,11 @@ from scipy.stats import describe
 # Visualization
 import matplotlib.pyplot as plt
 import matplotlib.cm as cmap
+import matplotlib.ticker as ticker
+import matplotlib.patheffects as path_effects
 
-from wordcloud import WordCloud
-import networkx as nx
+# from wordcloud import WordCloud
+# import networkx as nx
 from gensim.models import KeyedVectors
 
 # Data files
@@ -50,15 +52,28 @@ def plot_timestamps(article_id):
     timestamps = [int(datetime.datetime.strptime(x, "%Y-%m-%dT%H:%M:%SZ").timestamp()) for x in datetimes]
     plt.hist(timestamps)
 
-def plot_feature_correlations(extracted_features_df, author_comments=0):
-    labels = list(reversed(extracted_features_df.columns))
 
-    fig, ax = plt.subplots(1, 1, figsize=(14, 12))
-    cax = ax.matshow(extracted_features_df[extracted_features_df['author_comments'] > author_comments][labels].corr())
-    cbar = fig.colorbar(cax)
-    ax.set_xticklabels([''] + labels, rotation=45, ha='left')
-    ax.set_yticklabels([''] + labels)
+def plot_correlations(features_df, author_comments=0, ax=None, is_filtered=False):
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, figsize=(14, 12))
+    else:
+        fig = ax.get_figure()
+    labels = list(features_df.columns)
+    corr = features_df[features_df['author_comments'] > author_comments].corr()
+    cax = ax.matshow(corr, vmin=-1, vmax=1, cmap=plt.get_cmap("jet"))
+    cbar = plt.colorbar(cax, ax=ax, fraction=0.046, pad=0.04)
+    ax.set_xticklabels([' '] + labels, rotation=45, ha='left')
+    ax.set_yticklabels([' '] + labels)
     ax.xaxis.set_major_locator(ticker.MultipleLocator(1))
     ax.yaxis.set_major_locator(ticker.MultipleLocator(1))
-    ax.set_title(rf'Correlations: Comment Features ($comments_{{author}} \geq {author_comments}$)', y=1.15)
-    fig.savefig(f'correlations-{author_comments}.pdf')
+    if is_filtered:
+        ax.set_title(rf'Filtered Comment Correlations ($comments_{{author}} \geq {author_comments}$)', y=1.15)
+    else:
+        ax.set_title(rf'Comment Correlations ($comments_{{author}} \geq {author_comments}$)', y=1.15)
+    
+    for i in range(corr.shape[0]):
+        for j in range(corr.shape[1]):
+            ax.text(i, j, f'{corr.iloc[j, i]:.2f}', ha="center", va="center", color="b",
+                    path_effects=[path_effects.withSimplePatchShadow(
+                        offset=(1, -1), shadow_rgbFace="w", alpha=0.9)])
+    return fig, ax
