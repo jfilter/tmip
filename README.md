@@ -22,8 +22,8 @@ Assign a score to each comment based on upvotes under one arcticle and the rank.
 
 [preprocessing_first](preprocessing_first)
 
-### Thomas
+### Utils
 
-Some experiments and utility scripts by Thomas.
+Some experiments and utility scripts for inspecting and preprocessing the data.
 
-[thomas](thomas)
+[utils](utils)
