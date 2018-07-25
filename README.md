@@ -2,7 +2,7 @@
 
 Use Guardian articles for predicting upvotes in the comment section.
 
-## Folder
+## Folders
 
 ### Exploratory Data Analysis
 
@@ -10,6 +10,20 @@ Use Guardian articles for predicting upvotes in the comment section.
 
 ### Preprocessing
 
-Out final approach: [preprocessing_final](preprocessing_final)
+#### Out final approach
 
-Out first approach: [preprocessing_first](preprocessing_first)
+We take the best and worst comments per rank. This ensures all ranks are equally distributed in the final subset.
+
+[preprocessing_final](preprocessing_final)
+
+#### First Approach
+
+Assign a score to each comment based on upvotes under one arcticle and the rank. This failes to ensure that all ranks are equaliiy distributed in the final subset.
+
+[preprocessing_first](preprocessing_first)
+
+### Thomas
+
+Some experiments and utility scripts by Thomas.
+
+[thomas](thomas)
